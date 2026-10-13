@@ -1,18 +1,34 @@
-## 🅿️ Máquina de Estacionamento
-A máquina de estacionamento gerencia as operações de emissão de tickets, controle de pagamento e consulta de saldo. O usuário recebe um ticket numerado, paga o valor fixo, e a máquina registra o status do pagamento. Ela valida a transação e exibe o saldo total. O sistema permanece ativo até o encerramento pelo operador.
+# 06 · Máquina de estacionamento
 
-## ⚙️ Funcionalidades
-Emissão de Tickets: Gera tickets numerados com valor fixo para os motoristas, permitindo a entrada no estacionamento.
-Controle de Pagamento: Acompanha o status de pagamento dos tickets, atualizando para "pago" após a transação ser concluída.
-Consulta de Saldo: Fornece ao operador a opção de verificar o total arrecadado com os tickets pagos.
-Encerramento: O sistema pode ser encerrado manualmente, finalizando todas as operações em andamento.
+Modela a emissão e o pagamento de tickets. O `Main` é uma demonstração roteirizada, sem menu: emite
+dois tickets (R$ 10 e R$ 15), lista, paga o primeiro e mostra o saldo arrecadado.
 
-##  Sobre mim
-"Vamos nos conectar no LinkedIn! 🚀 Descubra mais sobre minha jornada profissional e explore oportunidades de colaboração em projetos inovadores. 🌟"
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/enzofrazaovencio/"><img src="https://media.licdn.com/dms/image/v2/D4D03AQEE0WZvw-CPgw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1714612030802?e=1730937600&v=beta&t=-R-mNELoKFRmTQzVI-5PLOvsai2_m3vSfEfA6yVpHGk" width="100px;"/><br /><sub><b>Enzo Frazão Vencio</b></sub></a><br />
-    </tr>
-  </tbody>
-</table>
+```mermaid
+classDiagram
+    class Ticket {
+        int numero
+        double valor
+        boolean pago
+        pagar()
+    }
+    class Estacionamento {
+        List~Ticket~ tickets
+        double saldo
+        emitirTicket(valor) Ticket
+        pagarTicket(numero)
+        consultarSaldo() double
+        listarTickets()
+    }
+    Estacionamento "1" o-- "*" Ticket
+```
+
+- O número do ticket é sequencial (`tickets.size() + 1`).
+- `pagarTicket` só soma ao saldo se o ticket ainda não estiver pago, então pagar duas vezes não
+  duplica a arrecadação.
+
+## Como executar
+
+```bash
+javac -encoding UTF-8 -d out Estacionamento/*.java
+java -cp out Estacionamento.Main
+```
